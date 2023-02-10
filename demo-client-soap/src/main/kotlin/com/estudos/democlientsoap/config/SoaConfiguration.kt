@@ -1,13 +1,13 @@
 package com.estudos.democlientsoap.config
 
-import com.estudos.democlientsoap.gateway.AddClient
 import com.estudos.democlientsoap.gateway.CountryClientGateway
+import com.estudos.democlientsoap.gateway.CountryClientWSImportGateway
 import com.estudos.democlientsoap.gateway.CountryV2Client
+import com.estudos.democlientsoap.stubs.CountryResourceImplService
 import com.estudos.democlientsoap.stubsv2.CountryV2ResourceImplService
 import com.sun.xml.ws.client.BindingProviderProperties
 import java.net.URL
 import javax.xml.ws.BindingProvider
-import javax.xml.ws.handler.MessageContext
 import org.apache.http.auth.UsernamePasswordCredentials
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -19,19 +19,10 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender
 class SoaConfiguration {
 
     @Bean
-    fun marshaller(): Jaxb2Marshaller {
-        val marshaller = Jaxb2Marshaller()
-        marshaller.contextPath = "com.estudos.democlientsoap.stubs"
-        return marshaller
-    }
-
-    @Bean
-    fun addClient(marshaller: Jaxb2Marshaller): AddClient {
-        val addClient = AddClient()
-        addClient.defaultUri = "http://localhost:8080/ws"
-        addClient.unmarshaller = marshaller
-        addClient.marshaller = marshaller
-        return addClient
+    fun countryClientWSImportGateway(): CountryClientWSImportGateway {
+        val url = URL("http://localhost:9999/ws/country?wsdl")
+        val port = CountryResourceImplService(url).countryResourceImplPort
+        return CountryClientWSImportGateway(port)
     }
 
     @Bean

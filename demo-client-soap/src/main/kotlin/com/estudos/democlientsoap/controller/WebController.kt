@@ -1,10 +1,8 @@
 package com.estudos.democlientsoap.controller
 
-import com.estudos.democlientsoap.gateway.AddClient
 import com.estudos.democlientsoap.gateway.CountryClientGateway
 import com.estudos.democlientsoap.gateway.CountryClientWSImportGateway
 import com.estudos.democlientsoap.gateway.CountryV2Client
-import com.estudos.democlientsoap.gateway.ResponseDTO
 import com.estudos.democlientsoap.model.Country
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -12,16 +10,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class WebController(
-    private val addClient: AddClient,
     private val countryGateway: CountryClientGateway,
     private val countryClientWSImportGateway: CountryClientWSImportGateway,
     private val countryV2Client: CountryV2Client
 ) {
-
-    @GetMapping("/add")
-    fun add(): ResponseDTO {
-        return addClient.add()
-    }
 
     @GetMapping("/country/{sigla}")
     fun country(@PathVariable sigla: String): Country {
